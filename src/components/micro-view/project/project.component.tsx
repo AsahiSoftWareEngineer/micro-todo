@@ -20,7 +20,11 @@ export const MicroProjectContainer = () => {
     <div className="w-full">
       <header className="flex items-center justify-between p-1 gap-1 fixed w-full top-0 drag bg-white">
         <div>
-          <Button variant={"ghost"} className="no-drag w-auto aspect-square" onClick={() => setIsOpenSearchDialog(true)}>
+          <Button
+            variant={"ghost"}
+            className="no-drag w-auto aspect-square"
+            onClick={() => setIsOpenSearchDialog(true)}
+          >
             <SearchIcon />
           </Button>
         </div>
@@ -35,6 +39,12 @@ export const MicroProjectContainer = () => {
         </div>
       </header>
       <main className="mt-12 p-1 w-full flex flex-col gap-1">
+        {!projects.length && (
+          <div className="w-full flex gap-10 mt-4 flex-col items-center justify-center">
+            <Label className="text-lg text-gray-700">No Project</Label>
+            <Button variant={"secondary"} onClick={() => setIsOpenProjectModal(true)} className="text-gray-700 no-drag cursor-pointer">Create Project</Button>
+          </div>
+        )}
         {projects.map((project) => (
           <Link
             to={`project/${project.id}`}

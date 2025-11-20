@@ -81,6 +81,12 @@ electron_1.app.on("window-all-closed", () => {
     if (process.platform !== "darwin")
         electron_1.app.quit();
 });
+electron_2.ipcMain.handle("json:init", async (_e, filePath) => {
+    if (fs_1.default.existsSync(filePath))
+        return;
+    fs_1.default.writeFileSync(filePath, JSON.stringify({ projects: [], tasks: [] }, null, 2));
+    return true;
+});
 electron_2.ipcMain.handle("json:read", async (_e, filePath) => {
     const text = fs_1.default.readFileSync(filePath, "utf-8");
     return JSON.parse(text);
@@ -88,4 +94,7 @@ electron_2.ipcMain.handle("json:read", async (_e, filePath) => {
 electron_2.ipcMain.handle("json:write", async (_e, { filePath, data }) => {
     fs_1.default.writeFileSync(filePath, JSON.stringify(data, null, 2));
     return true;
+});
+electron_2.ipcMain.handle("json:exists", async (_e, filePath) => {
+    return fs_1.default.existsSync(filePath);
 });

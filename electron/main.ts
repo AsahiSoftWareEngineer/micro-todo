@@ -47,6 +47,11 @@ app.whenReady().then(() => {
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
+ipcMain.handle("json:init", async (_e, filePath) => {
+  if (fs.existsSync(filePath)) return;
+  fs.writeFileSync(filePath, JSON.stringify({ projects: [], tasks: [] }, null, 2));
+  return true;
+});
 
 ipcMain.handle("json:read", async (_e, filePath) => {
   const text = fs.readFileSync(filePath, "utf-8");
@@ -57,3 +62,7 @@ ipcMain.handle("json:write", async (_e, { filePath, data }) => {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
   return true;
 });
+ipcMain.handle("json:exists", async (_e, filePath) => {
+  return fs.existsSync(filePath);
+});
+

@@ -5,8 +5,8 @@ import SlideRoutes from "react-slide-routes"
 import { MicroTodoContainer } from './components/micro-view/todo/todo.component'
 import { MicroProjectContainer } from './components/micro-view/project/project.component'
 import { init } from './models/models'
-function App() {
-  init()
+ function App() {
+   init()
   return (
     <div className='drag w-full h-screen '>
       <SlideRoutes>

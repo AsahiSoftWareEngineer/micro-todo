@@ -7,5 +7,7 @@ const api = {
     ping: () => "pong from preload",
     readJSON: (filePath) => electron_2.ipcRenderer.invoke("json:read", filePath),
     writeJSON: (filePath, data) => electron_2.ipcRenderer.invoke("json:write", { filePath, data }),
+    existsJSON: (filePath) => electron_2.ipcRenderer.invoke("json:exists", filePath),
+    initJSON: (filePath) => electron_2.ipcRenderer.invoke("json:init", filePath),
 };
 electron_1.contextBridge.exposeInMainWorld("api", api);
