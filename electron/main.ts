@@ -62,6 +62,7 @@ ipcMain.handle("json:write", async (_e, { filePath, data }) => {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
   return true;
 });
+
 ipcMain.handle("json:exists", async (_e, filePath) => {
   return fs.existsSync(filePath);
 });

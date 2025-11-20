@@ -1,8 +1,12 @@
+export const DB_PATH: string = (import.meta as ImportMeta).env?.VITE_DB_PATH ?? "./src/db/db.json";
+
 export const init = async () => {
-  await window.api.initJSON("./src/db/db.json");
+  const isExists = await window.api.existsJSON(DB_PATH);
+  if (isExists) return;
+  await window.api.writeJSON(DB_PATH, { projects: [], tasks: [] });
 };
 
 export const readDB = async () => {
-  const data = await window.api.readJSON("./src/db/db.json");
-  return data
+  const data = await window.api.readJSON(DB_PATH);
+  return data;
 }

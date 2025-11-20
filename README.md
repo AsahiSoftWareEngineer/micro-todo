@@ -82,6 +82,17 @@ npm run dev
 ```
 開発モードでは `NODE_ENV=development` が設定され、Electron は `http://localhost:5173` をロードし DevTools を開きます。
 
+### 環境変数 (`VITE_DB_PATH`)
+Renderer(フロント)から DB ファイルの場所を指定できます。`.env` または `.env.local` に以下を設定してください。
+
+```bash
+VITE_DB_PATH=/absolute/path/to/microtodo-db.json
+```
+
+- 相対パスも可ですが、実行時カレントに依存するため推奨は絶対パス。
+- 未設定時は既定で `./src/db/db.json` を使用します。
+- 例ファイル: `.env.example` を参照。
+
 ### 主要スクリプト
 | Script | 説明 |
 |--------|------|
@@ -106,10 +117,11 @@ npm install --save-dev electron-builder
 - Renderer ではグローバル状態管理ライブラリを使わず、Facade Hooks でローカル状態 + 非同期取得処理をカプセル化。
 - 永続化は同期的 JSON ファイル書き込みでシンプルさ優先 (競合/複数ウィンドウは未対応)。
 - UI は小サイズ前提で過度なナビゲーションを避け、Router + ダイアログ / コマンドパレット中心。
+ - DB パスは `VITE_DB_PATH` で上書き可能。既定は `./src/db/db.json`。
 
 ## 🔒 セキュリティ留意点
 - Preload 経由で限定 API のみ公開 (直接 `fs` 参照を避ける)。
-- 現状 `existsJSON` の IPC 実装が main 側に未定義のため、利用時は追加実装が必要。
+- `json:read` / `json:write` / `json:exists` を `ipcMain.handle` で実装済み。
 - 今後: contextIsolation, sandbox, CSP の強化 / 署名付きパッケージング。
 
 ## 🗺 今後の改善アイデア (TODO)
@@ -137,6 +149,8 @@ Issue / PR 歓迎。最初の提案では簡潔さ (小さなウィンドウ・�
 **Q. 複数端末同期は可能?**  → 現状ローカルのみ。Git / 外部同期サービス連携は未実装。
 
 **Q. サイズを変更したい**  → `electron/main.ts` の `BrowserWindow` 設定を編集。
+
+**Q. DB のパスを変更したい** → ルートに `.env` を作成し `VITE_DB_PATH` を設定してください。
 
 ---
 
